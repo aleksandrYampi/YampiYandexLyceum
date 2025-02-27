@@ -13,6 +13,7 @@ class Yampi:
         self.font = pygame.font.Font('AKONY.otf', 128)
         self.intro_background = pygame.image.load('intro.png')
         self.running = True
+        self.attack_spritesheet = Spritesheet('attack.png')
         pygame.display.set_icon(pygame.image.load('yampi_logo.png'))
         self.go_background = pygame.image.load('gg.png')
         pygame.display.set_caption('Yampi')
@@ -25,7 +26,7 @@ class Yampi:
                 if column == 'E':
                     Enemy(self, j, i)
                 if column == 'P':
-                     Player(self, j, i)
+                     self.player = Player(self, j, i)
 
 
     def new(self):
@@ -43,6 +44,17 @@ class Yampi:
             if event.type == pygame.QUIT:
                 self.playing = False
                 self.running = False
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    if self.player.facing == 'up':
+                        Attack(self, self.player.rect.x, self.player.rect.y - 64)
+                    if self.player.facing == 'down':
+                        Attack(self, self.player.rect.x, self.player.rect.y + 64)
+                    if self.player.facing == 'left':
+                        Attack(self, self.player.rect.x - 64, self.player.rect.y)
+                    if self.player.facing == 'right':
+                        Attack(self, self.player.rect.x + 64, self.player.rect.y)
 
     def update(self):
         self.all_sprites.update()
